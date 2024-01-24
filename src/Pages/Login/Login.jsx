@@ -2,10 +2,11 @@ import { Link } from 'react-router-dom';
 import img from '../../assets/login.svg'
 import { useContext } from 'react';
 import { AuthContext } from '../../Providers/AuthProvider';
+import axios from 'axios';
 
 const Login = () => {
 
-    const { signIn } = useContext(AuthContext); 
+    const { logIn } = useContext(AuthContext); 
 
     const handleForm = e => {
         e.preventDefault();
@@ -13,10 +14,19 @@ const Login = () => {
         const email = form.email.value;
         const password = form.password.value;
         console.log( email, password)
-        signIn(email, password)
+
+
+       logIn(email, password)
             .then(result => {
-                const user = result.user;
-                console.log(user);
+                const loggedIn = result.user;
+                console.log(loggedIn);
+                const user= {email}
+                // navigate(location?.state ? location?.state : '/')
+                // get access token with axios//
+
+                axios.post('http://localhost:5000/jwt',user)
+                .then(res =>{console.log(res.data)});
+
             })
             .catch(error => console.log(error));
     }
